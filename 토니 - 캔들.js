@@ -920,7 +920,8 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
       replier.reply("⭐️캔들⭐️", "🐰''"+sender+"'' 의 결과 : "+r)
       return
     }  
-   
+    
+    
     //수로 닉네임 삭제 및 수정
     if(msg.startsWith("#수로등록 ")){
       var my_hash = java.lang.String(imageDB.getProfileImage()).hashCode()
@@ -942,7 +943,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         var plus_nick = msg.substr(6)
         var read_nick = read("/메이플m/"+"/캔들수로/","수로닉.txt")
         var com_nick = read_nick + "," + plus_nick
-
+        
         save("/메이플m/"+"/캔들수로/","수로닉.txt", com_nick);
         replier.reply("⭐️캔들⭐️", "🐰수로 닉네임 추가 완료!")
         return
@@ -1016,17 +1017,20 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
               var ch_center = "," + check_name2[ch2] + ","
               var ch_first = check_name2[ch2] + ","
               var ch_last = "," + check_name2[ch2]
-
+              var ch_end = check_name2[ch2]
+              
               if(no_nick.indexOf(ch_center)!=-1){
                 var no_nick = no_nick.replace(ch_center, ",")
               }else if(no_nick.indexOf(ch_first)!=-1){
                 var no_nick = no_nick.replace(ch_first, "")
               }else if(no_nick.indexOf(ch_last)!=-1){
-                var no_nick = no_nick.replace(last_nick, "")
+                var no_nick = no_nick.replace(ch_last, "")
+              }else if(no_nick.indexOf(ch_end)!=-1){
+                var no_nick = "🐰모든 인원 체크 완료"
               }
             }
           }else if(check_name2 == "없음"){
-            var no_nick = "모든 인원 (전체)"
+            var no_nick = "🐰모든 인원 (전체)"
           }
         
           if(no_nick != "모든 인원 (전체)"){
@@ -1063,6 +1067,12 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         if(sender.indexOf(suro_nick[suro])!=-1){
           var check_num = read("/메이플m/"+"/캔들수로/","수로체크.txt")
           var check_name = read("/메이플m/"+"/캔들수로/","체크인원.txt")
+          
+          if(check_name.indexOf(suro_nick[suro])!=-1){
+            replier.reply("⭐️캔들⭐️", "🐰" + sender + "\n이미 등록 했는데요?!ㅇ ㅅㅇ")
+            return
+          }
+          
           var check_num2 = Number(check_num) + 1
           save("/메이플m/"+"/캔들수로/","수로체크.txt", check_num2);
           
@@ -1085,8 +1095,8 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
     }
     
     //대리수로체크
-    if(msg.startsWith("#대리수로 ")){
-      var deputy_nick = msg.substr(6)
+    if(msg.startsWith("#수로완 ")){
+      var deputy_nick = msg.substr(5)
       var read_nick = read("/메이플m/"+"/캔들수로/","수로닉.txt")
       var suro_nick = read_nick.split(",")
       
@@ -1094,27 +1104,33 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         if(deputy_nick.indexOf(suro_nick[suro])!=-1){
           var check_num = read("/메이플m/"+"/캔들수로/","수로체크.txt")
           var check_name = read("/메이플m/"+"/캔들수로/","체크인원.txt")
+          
+          if(check_name.indexOf(suro_nick[suro])!=-1){
+            replier.reply("⭐️캔들⭐️", "🐰" + deputy_nick + "\n이미 등록 했는데요?!ㅇ ㅅㅇ")
+            return
+          }
+          
           var check_num2 = Number(check_num) + 1
           save("/메이플m/"+"/캔들수로/","수로체크.txt", check_num2);
           
           if(check_name == ","){
             save("/메이플m/"+"/캔들수로/","체크인원.txt", suro_nick[suro]);
 
-            replier.reply("⭐️캔들⭐️", "🐰" + sender + "\n수로 쳤음 확인 완료!")
+            replier.reply("⭐️캔들⭐️", "🐰" + deputy_nick + " 캐릭터!\n수로 쳤음 확인 완료!")
             return
           }else{
             var check_p_n = check_name + "," + suro_nick[suro]
             save("/메이플m/"+"/캔들수로/","체크인원.txt", check_p_n);
 
-            replier.reply("⭐️캔들⭐️", "🐰" + sender + "\n수로 쳤음 확인 완료!")
+            replier.reply("⭐️캔들⭐️", "🐰" + deputy_nick + " 캐릭터!\n수로 쳤음 확인 완료!")
             return
           }
         }
       }
-      replier.reply("⭐️캔들⭐️", "🐰" + sender + "\n수로 명단 닉네임에 등록이 안된거 같은데!?ㅇ ㅅㅇ\n\n뜡부 멘션해서 확인 요청 해봐!🐰")
+      replier.reply("⭐️캔들⭐️", "🐰" + deputy_nick + "\n수로 명단 닉네임에 등록이 안된거 같은데!?ㅇ ㅅㅇ\n\n뜡부 멘션해서 확인 요청 해봐!🐰")
       return
     }
-
+    
 /*
 // 수로 체크용
 if(msg=="!수로설문"){

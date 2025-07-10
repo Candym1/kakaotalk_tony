@@ -1,4 +1,4 @@
-var scriptName = "토니-윌운영방";
+var scriptName = "토니 - 상위보스 통합 문의방";
 
 /**
  * (string) room
@@ -70,6 +70,7 @@ one_check_a = []
 one_check_cr = []
 one_check_dun = []
 one_check_black = []
+one_check_seren = []
 
 //관리자
 sender_m = ["뜡부", "제티", "꿀잠", "밉움", "꺼짐", "겸댕"]
@@ -92,6 +93,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
   if(room=="상위보스 통합 문의방"){
   try{
     
+    /*
     //진힐라 스위칭
     if(msg == "진힐라 스위칭"){
       for(var a = 0; a < sender_m.length; a++){
@@ -108,7 +110,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         }
       }
     }
-    
+    */
     
     //윌 비번 설정
     if(msg.indexOf("!윌비밀번호 ")!=-1){
@@ -175,6 +177,19 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
       }
     }
     
+    //세렌 비번설정
+    if(msg.indexOf("!세렌비밀번호 ")!=-1){
+      if(sender.indexOf("뜡부")!=-1){
+        var pass = msg.split("!세렌비밀번호 ")[1]
+        save("/메이플m/"+"/세렌연습방/","password.txt", pass)
+        replier.reply("상위보스 통합 문의방", "🐰비밀번호 "+pass+" 로 설정 완료!")
+        return
+      }else{
+        replier.reply("상위보스 통합 문의방", "🐰뜡부 전용인데요 ㅇ ㅅㅇ??")
+        return
+      }
+    }
+    
     //경고방 다이렉트 입장
     if(msg == "경고방 입장"){
       replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/guYEJgbh")
@@ -183,7 +198,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
     
     //보스 다이렉트 입장
     if(msg == "윌 입장" || msg == "진힐라 입장" || msg == "카윌 입장" || msg == "듄켈 입장" ||
-    msg == "검마 입장"){
+    msg == "검마 입장" || msg == "세렌 입장"){
       for(var a = 0; a < sender_m.length; a++){
         if(sender.indexOf(sender_m[a])!=-1){
           var password_w = read("/메이플m/"+"/윌연습방/", "password.txt")
@@ -191,6 +206,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
           var password_c = read("/메이플m/"+"/카룻카윌연습방/", "password.txt")
           var password_d = read("/메이플m/"+"/듄켈연습방/", "password.txt")
           var password_b = read("/메이플m/"+"/검마연습방/", "password.txt")
+          var password_s = read("/메이플m/"+"/세렌연습방/", "password.txt")
         
           if(msg == "윌 입장"){
             replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/g1zrsmYf"
@@ -253,6 +269,15 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
             replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/g07dHy5g"
             +"\n\n🐰 안녕안녕 반가워요!"
             +"\n🍒비밀번호는 " +password_b+ " 입니다!"
+            +"\n공지는 다시와도 꼭 확인 하시고!"
+            +"\n\n⭐️입장되면 방 비워주세요!"+
+            "\n🚫일정시간 까지 남을 경우 추방 됩니다!")
+            
+            return
+          }else if(msg == "세렌 입장"){
+            replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/gcK6vuEh"
+            +"\n\n🐰 안녕안녕 반가워요!"
+            +"\n🍒비밀번호는 " +password_s+ " 입니다!"
             +"\n공지는 다시와도 꼭 확인 하시고!"
             +"\n\n⭐️입장되면 방 비워주세요!"+
             "\n🚫일정시간 까지 남을 경우 추방 됩니다!")
@@ -395,6 +420,25 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
       return
     }
     
+    //세렌 입장양식
+    if(msg == "세렌 입장양식"){
+      for(var a = 0; a < sender_m.length; a++){
+        if(sender.indexOf(sender_m[a])!=-1){
+          replier.reply("상위보스 통합 문의방", "방입장 유저라면 양식 복사해서\n적어주세요! 양식 수정 ❌\n\n1.닉네임 :\n"+
+          "2.직업 :\n"+
+          "3.아케인 포스 :\n"+
+          "4.템 세팅 및 스포 :\n"+
+          "5.칠흑 장신구 갯수 :\n\n"+
+          "➖➖🚫 지 우 지 마 세 요 🚫➖➖\n"+
+          "🚫세렌 입장 전용양식 이므로 반드시 전체 복붙해서 작성할것.")
+      
+          return  
+        }
+      }
+      replier.reply("상위보스 통합 문의방", "🐰 관리자 불러오세요 ㅇㅅㅇ")
+      return
+    }
+    
     //문의내용 선택
     if(msg == "1번" || msg == "2번" || msg == "3번" || msg == "4번" || msg == "5번"){
       if(msg == "1번"){
@@ -428,6 +472,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
           "\n3 > 카루시,카윌" +
           "\n4 > 듄켈" +
           "\n5 > 검마" +
+          "\n6 > 세렌" +
           "\n\n🚫일정시간 내용이 없거나\n"+
           "보스방과 관련없는 문의 시 추방 됩니다!")
           save("/메이플m/"+"/윌연습방/","입장인원.txt", sender)
@@ -513,7 +558,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
     }
     
     //방입장 양식 제공
-    if(msg == "1" || msg == "2" || msg == "3" || msg == "4" || msg == "5"){
+    if(msg == "1" || msg == "2" || msg == "3" || msg == "4" || msg == "5" || msg == "6"){
       save("/메이플m/"+"/윌연습방/","입장인원.txt", "No")
       if(one_check.indexOf("ok")!=-1){
         one_check = []
@@ -715,6 +760,46 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
       
             return
           }
+        }else if(msg == "6"){
+          if(member == sender){
+            one_check2.push("ok")
+            one_check_seren.push("ok")
+            
+            replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" + 
+            "외출복귀 유저라면 외출복귀"+
+            "\n\n방입장 유저라면 양식 복사해서\n적어주세요! 양식 수정 ❌\n\n1.닉네임 :\n"+
+            "2.직업 :\n"+
+            "3.아케인 포스 :\n"+
+            "4.템 세팅 및 스포 :\n"+
+            "5.칠흑 장신구 갯수 :\n\n"+
+            "➖➖🚫 지 우 지 마 세 요 🚫➖➖\n"+
+            "🚫세렌 입장 전용양식 이므로 반드시 전체 복붙해서 작성할것.")
+            java.lang.Thread.sleep(2000)
+            replier.reply("상위보스 통합 문의방", "🥕 인증 예시 방법 🥕\n\n"+
+            "⚠️ 카톡 프로필명을 본캐로 간주\n"+
+            ": 작성 닉네임과 카톡 프로필명이 동일해야 입장 가능\n"+
+            "⚠️ 본캐 스펙 안되지만 대리컨자 입장\n"+
+            ": [대리컨인증] 입력\n\n"+
+            "https://ibb.co/hDdPDHx")
+            save("/메이플m/"+"/윌연습방/","문의입장.txt", "No")
+            java.lang.Thread.sleep(20000)
+            one_check_seren = []
+            
+            return
+          }else if(member == "No"){
+            replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" +
+            "이런... 고민이 너무 길었어요!"+
+            "\n20초가 지나 1번 부터 다시 입력해주세요!")
+            return
+          }else{
+            replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" + 
+            "첫문의 프로필명이랑 다르네요??"+
+            "\n다시 1번 부터 입력해주세요!")
+          
+            save("/메이플m/"+"/윌연습방/","문의입장.txt", "No")
+      
+            return
+          }
         }
       }
     }
@@ -741,6 +826,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         var out_mem_4 = read("/메이플m/"+"/카룻카윌연습방/", "외출.txt")
         var out_mem_5 = read("/메이플m/"+"/듄켈연습방/", "외출.txt")
         var out_mem_6 = read("/메이플m/"+"/검마연습방/", "외출.txt")
+        var out_mem_7 = read("/메이플m/"+"/세렌연습방/", "외출.txt")
         
         if(one_check_weel.indexOf("ok")!=-1){
           one_check_weel = []
@@ -882,7 +968,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
           one_check_black = []
           if(out_mem_6.indexOf(sender)!=-1){
             var password = read("/메이플m/"+"/검마연습방/", "password.txt")
-            replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/gj8jwB0g"
+            replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/g07dHy5g"
             +"\n\n🐰 "+sender+" 반가워요!"
             +"\n🍒비밀번호는 " +password+ " 입니다!"
             +"\n공지는 다시와도 꼭 확인 하시고!"
@@ -897,6 +983,35 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
             }else{
               var de2_out = out_mem_6.replace("," + sender, "")
               save("/메이플m/"+"/검마연습방/","외출.txt", de2_out)
+              return
+            }
+          }else{
+            replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" +
+            "외출자 명단에 없네요!"+
+            "\n양식대로 다시 작성해주세요!!"+
+            "\n\n🍎외출 전 [외출] 이라고 작성 후 나가셔야"+
+            " 외출자 명단에 등록되십니다!")
+            return
+          }
+        }else if(one_check_seren.indexOf("ok")!=-1){
+          one_check_seren = []
+          if(out_mem_7.indexOf(sender)!=-1){
+            var password = read("/메이플m/"+"/세렌연습방/", "password.txt")
+            replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/gcK6vuEh"
+            +"\n\n🐰 "+sender+" 반가워요!"
+            +"\n🍒비밀번호는 " +password+ " 입니다!"
+            +"\n공지는 다시와도 꼭 확인 하시고!"
+            +"\n\n⭐️입장되면 방 비워주세요!"+
+            "\n🚫일정시간 까지 남을 경우 추방 됩니다!")
+        
+            var de_out_nick = sender + ","
+            if(out_mem_6.indexOf(de_out_nick)!=-1){
+              var de_out = out_mem_7.replace(de_out_nick, "")
+              save("/메이플m/"+"/세렌연습방/","외출.txt", de_out)
+              return
+            }else{
+              var de2_out = out_mem_7.replace("," + sender, "")
+              save("/메이플m/"+"/세렌연습방/","외출.txt", de2_out)
               return
             }
           }else{
@@ -1053,7 +1168,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
                   "\n이외에 다른 문의사항은\n"+
                   "운영진 멘션 주세요!🐰")
                   return
-                }          
+                }
               }else{//2아케인 이상
                 if(sender.indexOf(s_nick3)!=-1){
                   if(jin_swich == true){
@@ -1400,7 +1515,7 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         //포스 확인
         if(1320 > s_fos3){
           replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" + 
-          "카루시,카윌 기본 포스가 1320입니다!"
+          "검마 기본 포스가 1320입니다!"
           +"\n때문에 포스 제한으로 입장 불가하며\n"+
           "포스를 입력 안했다면 다시 입력하거나\n"+
           "잘못 입력했다면 다시 적어주세요\n"+
@@ -1497,6 +1612,133 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         " 조건에 맞았음에도 해당 문구가 보인다면 "+
         "예시처럼 다시 작성 해주세요!\n\n"+
         "ex) 4.템 세팅 및 스포 : 5앱2아케인(or 2앜)"+
+        "\n\n이외에 다른 문의사항은\n"+
+        "운영진 멘션 주세요!🐰")
+              
+        return 
+      }
+    }
+    
+    //세렌 양식 검증과정
+    if(msg.indexOf("🚫세렌 입장 전용양식")!=-1){
+      if(msg.indexOf("닉네임 :")!=-1){
+        var passw = read("/메이플m/"+"/세렌연습방/", "password.txt")
+        var s_nick = msg.split(":")[1]
+        var s_nick2 = msg.substring(msg.indexOf(s_nick), msg.indexOf("2.직업"))
+        var s_nick3 = s_nick2.replace(/\s/g, '')
+        
+        var s_fos = msg.split("3.아케인 포스 :")[1]
+        var s_fos2 = msg.substring(msg.indexOf(s_fos), msg.indexOf("4.템 세팅"))
+        var s_fos3 = s_fos2.replace(/[^0-9]/g, '')
+        
+        var item_set = msg.split("4.템 세팅 및 스포 :")[1]
+        var item_set2 = msg.substring(msg.indexOf(item_set), msg.indexOf("5.칠흑 장신구"))
+        var item_set3 = item_set2.replace(/\s/g, '')
+        
+        var sendtem = msg.split("5.칠흑 장신구 갯수 :")[1]
+        var sendtem2 = msg.substring(msg.indexOf(sendtem), msg.indexOf("➖➖🚫"))
+        var sendtem3 = sendtem2.replace(/[^0-9]/g, '')
+        
+        //포스 확인
+        if(1320 > s_fos3){
+          replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" + 
+          "세렌 기본 포스가 1320입니다!"
+          +"\n때문에 포스 제한으로 입장 불가하며\n"+
+          "포스를 입력 안했다면 다시 입력하거나\n"+
+          "잘못 입력했다면 다시 적어주세요\n"+
+          "ex) 3.아케인 포스 : 1050 (숫자만)"
+          +"\n\n이외에 다른 문의사항은"+
+          "\n운영진 멘션 주세요!🐰")
+          return
+        }
+        
+        item_name = ["7앜", "7아케인"]
+        
+        // 템셋팅 확인
+        for(var a = 0; a < item_name.length; a++){
+          if(item_set3.indexOf(item_name[a])!=-1){
+            if(item_name[a] == "2아케인" || item_name[a] == "2앜"){
+              /*if(item_set3.indexOf("풀")!=-1 || item_set3.indexOf("105")!=-1){
+                if(5 <= sendtem3){
+                  if(sender.indexOf(s_nick3)!=-1){
+                    replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/g07dHy5g"
+                    +"\n\n🐰반가워요! "+sender
+                    +"\n🍒검마 비밀번호는 "+ passw +" 입니다!"
+                    +"\n\n앞으로 잘 부탁드리고 공지 꼭 읽어주세요!"
+                    +"\n공지 미확인으로 인한 불이익에 대해선"
+                    +"\n책임지지 않습니다!"
+                    +"\n\n⭐️입장하면 방은 비워주세요!"+
+                    "\n🚫일정시간 까지 남을 경우 추방 됩니다!")
+            
+                    return
+                  }else{
+                    replier.reply("상위보스 통합 문의방", "🐰본인계정으로만 방입장 가능합니다!"
+                    +"\n또는 대표캐릭 1개닉만 작성(서버도x)"
+                    +"\nex) 1.닉네임 : 뜡부"
+                    +"\n\n이외에 다른 문의사항은"
+                    +"\n운영진 멘션 주세요!🐰")
+                    return
+                  }
+                }else{
+                  replier.reply("상위보스 통합 문의방", "🐰검마 칠흑제한은 5개^ 입니다!"
+                  +"\n때문에 갯수 제한으로 입장 불가하며\n"+
+                  "칠흑 갯수를 입력 안했다면 다시 입력하거나 "+
+                  "잘못 입력했다면 다시 적어주세요\n\n"+
+                  "ex) 5.칠흑 장신구 갯수 : 5개(숫자 나오게)"
+                  +"\n\n이외에 다른 문의사항은"+
+                  "\n운영진 멘션 주세요!🐰")
+                  return
+                }
+              }else{
+                replier.reply("상위보스 통합 문의방", "🐰2앜은 풀스포만 입장 가능해요!\n"+
+                "\nex)풀스포 또는 105스포\n"+
+                "\n이외에 다른 문의사항은\n"+
+                "운영진 멘션 주세요!🐰")
+                return
+              }*/
+            }else{//7아케인 이상
+              if(7 <= sendtem3){
+                if(sender.indexOf(s_nick3)!=-1){
+                  replier.reply("상위보스 통합 문의방", "https://open.kakao.com/o/gcK6vuEh"
+                  +"\n\n🐰반가워요! "+sender
+                  +"\n🍒세렌 비밀번호는 "+ passw +" 입니다!"
+                  +"\n\n앞으로 잘 부탁드리고 공지 꼭 읽어주세요!"
+                  +"\n공지 미확인으로 인한 불이익에 대해선"
+                  +"\n책임지지 않습니다!"
+                  +"\n\n⭐️입장하면 방은 비워주세요!"+
+                  "\n🚫일정시간 까지 남을 경우 추방 됩니다!")
+            
+                  return
+                }else{
+                  replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" +
+                  "🚫본인계정으로만 방입장 가능합니다!"
+                  +"\n\n⚠️ 카톡 프로필명을 본캐로 간주"
+                  +"\n: 아래 예시 사진을 보고 다시 입력"
+                  +"\n(작성 닉네임과 카톡 프로필명이 동일해야 입장 가능)"
+                  +"\n\n⚠️ 본캐가 아닌 대리컨자 입장"
+                  +"\n: [대리컨인증] 으로 입력! 🐰"
+                  +"\n\nhttps://ibb.co/hDdPDHx")
+                  return
+                }
+              }else{
+                replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" + 
+                "세렌 칠흑제한은 7개^ 입니다!"
+                +"\n때문에 갯수 제한으로 입장 불가하며\n"+
+                "칠흑 갯수를 입력 안했다면 다시 입력하거나 "+
+                "잘못 입력했다면 다시 적어주세요\n\n"+
+                "ex) 5.칠흑 장신구 갯수 : 7개(숫자 나오게)"
+                +"\n\n이외에 다른 문의사항은"+
+                "\n운영진 멘션 주세요!🐰")
+                return
+              } 
+            }
+          }
+        }
+        replier.reply("상위보스 통합 문의방", "🐰 " + sender + "\n\n" +
+        "세렌 부터는 7앜 7칠^ 부터 가능하며"+
+        " 조건에 맞았음에도 해당 문구가 보인다면 "+
+        "예시처럼 다시 작성 해주세요!\n\n"+
+        "ex) 4.템 세팅 및 스포 : 7아케인(or 7앜)"+
         "\n\n이외에 다른 문의사항은\n"+
         "운영진 멘션 주세요!🐰")
               
@@ -2148,6 +2390,25 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
       }
     }
     
+    if(msg.startsWith("!세렌추방 ")){
+      for(var a = 0; a < sender_m.length; a++){
+        if(sender.indexOf(sender_m[a])!=-1){
+          var by_mem_mtr = msg.substr(6)
+          var by_read = read("/메이플m/","/경고/"+"세렌추방"+".txt");
+          if(by_read !== "No"){
+            var plus_bye = by_read + "," + by_mem_mtr
+            save("/메이플m/"+"/경고/","세렌추방.txt", plus_bye)
+            replier.reply("상위보스 통합 문의방", by_mem_mtr + " 세렌방 추방 완료\n착하게 사세요 ㅇ ㅅㅇ🐰")
+            return
+          }else{
+            save("/메이플m/"+"/경고/","세렌추방.txt", by_mem_mtr)
+            replier.reply("상위보스 통합 문의방", by_mem_mtr + " 세렌방 추방 완료!\n착하게 사세요 ㅇ ㅅㅇ🐰")
+            return
+          }
+        }
+      }
+    }
+    
     //추방취소
     if(msg.startsWith("!윌추방취소 ")){
       for(var a = 0; a < sender_m.length; a++){
@@ -2264,6 +2525,29 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
         }
       }
     }
+    
+    if(msg.startsWith("!세렌추방취소 ")){
+      for(var a = 0; a < sender_m.length; a++){
+        if(sender.indexOf(sender_m[a])!=-1){
+          var can_by_mtr = msg.substr(8)
+          var can_by_read = read("/메이플m/","/경고/"+"세렌추방"+".txt");
+          if(can_by_read.indexOf(can_by_mtr + ",")!=-1){
+            var cancle_mem = can_by_read.replace(can_by_mtr + ",", "")
+            save("/메이플m/"+"/경고/","세렌추방.txt", cancle_mem)
+            replier.reply("상위보스 통합 문의방", can_by_mtr + " 세렌방 취소 완료\n갱생됐길 바랍니다? ㅇ ㅅㅇ🐰")
+            return
+          }else if(can_by_read.indexOf("," + can_by_mtr)){
+            var cancle_mem2 = can_by_read.replace("," + can_by_mtr, "")
+            save("/메이플m/"+"/경고/","세렌추방.txt", cancle_mem2)
+            replier.reply("상위보스 통합 문의방", can_by_mtr + " 세렌방 취소 완료\n갱생됐길 바랍니다? ㅇ ㅅㅇ🐰")
+            return  
+          }else{
+            replier.reply("상위보스 통합 문의방", "없는 인원인데염?? ㅇ ㅅㅇ?🐰")
+            return
+          }
+        }
+      }
+    }
      
     //추방리스트 보기
     if(msg == "!윌추방리스트"){
@@ -2351,6 +2635,24 @@ function responseFix(room, msg, sender, isGroupChat, replier, imageDB, packageNa
           
           var fin_list = "🔹 " + by_list
           replier.reply("상위보스 통합 문의방", "검마방 추방 리스트에요!!\n눌러서 확인하세요!🐰\n" + 줄이기 + "\n" + fin_list)
+          return
+        }
+      }
+    }
+    
+    if(msg == "!세렌추방리스트"){
+      for(var a = 0; a < sender_m.length; a++){
+        if(sender.indexOf(sender_m[a])!=-1){
+          var bye_mem_list = read("/메이플m/","/경고/"+"세렌추방"+".txt")
+          var by_list = bye_mem_list.replace(/[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/g, "\n🔹 ")
+          
+          if(by_list == "No"){
+            replier.reply("상위보스 통합 문의방", "아무도 없어여! ㅇ ㅅㅇ🐰")
+            return
+          }
+          
+          var fin_list = "🔹 " + by_list
+          replier.reply("상위보스 통합 문의방", "세렌방 추방 리스트에요!!\n눌러서 확인하세요!🐰\n" + 줄이기 + "\n" + fin_list)
           return
         }
       }
